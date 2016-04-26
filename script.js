@@ -1,13 +1,13 @@
 var canvas = document.getElementById("canvas");
 var ctx = canvas.getContext("2d");
 
+// need to shift origin to the middle of the canvas
 var transX = canvas.width * 0.5,
     transY = canvas.height * 0.5;
 
 ctx.translate(transX, transY);
 
 var SCALE_FACTOR = 100;
-
 
 var cube = {
   vertices: [
@@ -48,7 +48,16 @@ var square = {
   }
 };
 
-drawMatrix(square);
+draw();
+
+
+
+function draw() {
+  ctx.clearRect(-0.5 * canvas.width, -0.5 * canvas.height, canvas.width, canvas.height);
+  square.vertices = rotateMatrixR2(square.vertices, .05);
+  drawMatrix(square);
+  requestAnimationFrame(draw);
+}
 
 
 function drawLine(pt1, pt2) {
@@ -71,4 +80,25 @@ function drawMatrix(matrix) {
   });
 }
 
-// will need to shift origin to the middle of the canvas
+function multiplyMatrices(m1, m2) {
+    var result = [];
+    for (var i = 0; i < m1.length; i++) {
+        result[i] = [];
+        for (var j = 0; j < m2[0].length; j++) {
+            var sum = 0;
+            for (var k = 0; k < m1[0].length; k++) {
+                sum += m1[i][k] * m2[k][j];
+            }
+            result[i][j] = sum;
+        }
+    }
+    return result;
+}
+
+function rotateMatrixR2(matrix, angle) {
+  rotationMatrix = [
+    [Math.cos(angle), -Math.sin(angle)],
+    [Math.sin(angle), Math.cos(angle)]
+  ];
+  return multiplyMatrices(matrix, rotationMatrix)
+}
