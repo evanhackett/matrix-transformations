@@ -61,10 +61,6 @@ function draw() {
 
 
 function drawLine(pt1, pt2) {
-
-  console.log('pt1', pt1);
-  console.log('pt2', pt2);
-
   ctx.beginPath();
   ctx.moveTo(pt1[0] * SCALE_FACTOR, pt1[1] * SCALE_FACTOR);
   ctx.lineTo(pt2[0] * SCALE_FACTOR, pt2[1] * SCALE_FACTOR);
